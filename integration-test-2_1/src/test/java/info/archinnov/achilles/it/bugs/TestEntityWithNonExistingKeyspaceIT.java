@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package info.archinnov.achilles.it.bugs;
 
 import static info.archinnov.achilles.embedded.CassandraEmbeddedConfigParameters.DEFAULT_CASSANDRA_EMBEDDED_KEYSPACE_NAME;
 import static java.lang.String.format;
-
 
 import org.junit.Rule;
 import org.junit.Test;

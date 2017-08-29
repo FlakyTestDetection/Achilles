@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,12 @@ import static info.archinnov.achilles.internals.parser.TypeUtils.*;
 
 import javax.lang.model.element.Modifier;
 
-import com.squareup.javapoet.*;
+import com.squareup.javapoet.AnnotationSpec;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.TypeName;
+import com.squareup.javapoet.TypeSpec;
 
 import info.archinnov.achilles.internals.parser.context.GlobalParsingContext;
-import info.archinnov.achilles.internals.utils.NamingHelper;
 
 public class ManagerFactoryBuilderCodeGen {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ import com.datastax.driver.core.Cluster;
 import info.archinnov.achilles.embedded.CassandraEmbeddedServerBuilder;
 import info.archinnov.achilles.exception.AchillesBeanMappingException;
 import info.archinnov.achilles.generated.ManagerFactoryBuilder;
-import info.archinnov.achilles.internals.entities.EntityWithMissingPartitionKey;
 import info.archinnov.achilles.internals.entities.EntityWithMissingClustering;
+import info.archinnov.achilles.internals.entities.EntityWithMissingPartitionKey;
 import info.archinnov.achilles.internals.entities.EntityWithMissingStaticCol;
 
 public class ValidateSchemaIT {

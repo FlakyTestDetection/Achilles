@@ -1,11 +1,29 @@
+/*
+ * Copyright (C) 2012-2017 DuyHai DOAN
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package info.archinnov.achilles.script;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.atIndex;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-import com.datastax.driver.core.Session;
-import com.datastax.driver.core.SimpleStatement;
-import com.google.common.base.Joiner;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -14,8 +32,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.datastax.driver.core.Session;
+import com.datastax.driver.core.SimpleStatement;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ScriptExecutorTest {
@@ -80,7 +98,7 @@ public class ScriptExecutorTest {
 
         //Then
         assertThat(statements).hasSize(2);
-        assertThat(statements.get(0).getQueryString()).isEqualTo("BEGIN UNLOGGED BATCH USING TIMESTAMP 123456789 INSERT INTO test(id,value) VALUES(1,'test'); DELETE FROM test WHERE id=1;APPLY BATCH;");
+        assertThat(statements.get(0).getQueryString()).isEqualTo(" BEGIN UNLOGGED BATCH USING TIMESTAMP 123456789  INSERT INTO test(id,value) VALUES(1,'test');  DELETE FROM test WHERE id=1; APPLY BATCH;");
         assertThat(statements.get(1).getQueryString()).isEqualTo("INSERT INTO test(id,value) VALUES(2,'test2');");
     }
 

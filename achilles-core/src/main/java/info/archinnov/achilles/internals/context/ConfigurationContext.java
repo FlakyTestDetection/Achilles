@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -291,7 +291,7 @@ public class ConfigurationContext {
     }
 
     public void injectDependencies(TupleTypeFactory tupleTypeFactory, UserTypeFactory userTypeFactory, AbstractEntityProperty<?> entityProperty) {
-        LOGGER.info("Start injecting dependencies to meta classes");
+        LOGGER.debug("Start injecting dependencies to meta classes");
 
         final Class<?> entityClass = entityProperty.entityClass;
 

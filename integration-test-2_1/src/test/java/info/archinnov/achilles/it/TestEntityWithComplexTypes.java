@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.ByteBuffer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.*;
 
 import org.apache.commons.lang3.RandomUtils;
@@ -45,10 +44,10 @@ import info.archinnov.achilles.generated.ManagerFactoryBuilder;
 import info.archinnov.achilles.generated.manager.EntityWithComplexTypes_Manager;
 import info.archinnov.achilles.internals.codecs.EncodingOrdinalCodec;
 import info.archinnov.achilles.internals.codecs.ProtocolVersionCodec;
-import info.archinnov.achilles.internals.types.ClassAnnotatedByCodec;
 import info.archinnov.achilles.internals.entities.EntityWithComplexTypes;
-import info.archinnov.achilles.internals.types.IntWrapper;
 import info.archinnov.achilles.internals.entities.TestUDT;
+import info.archinnov.achilles.internals.types.ClassAnnotatedByCodec;
+import info.archinnov.achilles.internals.types.IntWrapper;
 import info.archinnov.achilles.junit.AchillesTestResource;
 import info.archinnov.achilles.junit.AchillesTestResourceBuilder;
 import info.archinnov.achilles.script.ScriptExecutor;

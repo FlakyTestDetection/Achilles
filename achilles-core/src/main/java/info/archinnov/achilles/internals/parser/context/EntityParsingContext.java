@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,10 +52,6 @@ public class EntityParsingContext {
         this.globalContext = globalContext;
         this.namingStrategy = namingStrategy;
         this.className = entityType.toString();
-    }
-
-    public boolean hasCodecFor(TypeName typeName) {
-        return globalContext.hasCodecFor(typeName);
     }
 
     public CodecFactory.CodecInfo getCodecFor(TypeName typeName) {

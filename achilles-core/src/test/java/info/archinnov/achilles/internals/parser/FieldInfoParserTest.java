@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -766,6 +766,29 @@ public class FieldInfoParserTest extends AbstractTestProcessor {
 
             assertThat(fieldInfo.codeBlock.toString().trim().replaceAll("\n", ""))
                     .isEqualTo(readCodeLineFromFile("expected_code/method_parser/should_generate_field_info_for_column_with_no_setter.txt"));
+        });
+        launchTest();
+    }
+
+    @Test
+    public void should_generate_field_info_for_public_final_columns() throws Exception {
+        setExec(aptUtils -> {
+            final FieldInfoParser parser = new FieldInfoParser(aptUtils);
+            final String className = TestEntityForFieldInfo.class.getCanonicalName();
+            final TypeElement typeElement = aptUtils.elementUtils.getTypeElement(className);
+            final List<AccessorsExclusionContext> exclusionContexts = Arrays.asList(new AccessorsExclusionContext("immutableColumn", true, true));
+            final EntityParsingContext context = new EntityParsingContext(typeElement,
+                    ClassName.get(TestEntityForFieldInfo.class), strategy, exclusionContexts,
+                    globalParsingContext);
+
+            VariableElement elm = findFieldInType(typeElement, "immutableColumn");
+
+            final AnnotationTree annotationTree = AnnotationTree.buildFrom(aptUtils,  globalParsingContext, elm);
+
+            FieldInfoContext fieldInfo = parser.buildFieldInfo(elm, annotationTree, context);
+
+            assertThat(fieldInfo.codeBlock.toString().trim().replaceAll("\n", ""))
+                    .isEqualTo(readCodeLineFromFile("expected_code/method_parser/should_generate_field_info_for_public_final_columns.txt"));
         });
         launchTest();
     }

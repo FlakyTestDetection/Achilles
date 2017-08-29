@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ public abstract class IndexSelectWhereDSLCodeGen extends SelectWhereDSLCodeGen
         final TypeName endReturnTypeName = ClassName.get(DSL_PACKAGE, signature.endReturnType(classSignatureParams.dslSuffix, classSignatureParams.endDslSuffix));
         final TypeName abstractEndType = genericType(classSignatureParams.abstractWhereType, endReturnTypeName, signature.entityRawClass);
 
-        final ClassSignatureInfo lastSignature = ClassSignatureInfo.of(endTypeName, endReturnTypeName, abstractEndType, endClassName);
+        final ClassSignatureInfo lastSignature = ClassSignatureInfo.of(endTypeName, endReturnTypeName, abstractEndType, endClassName, null, null);
 
         String parentClassName = signature.indexSelectClassName()
                 + "." + classSignatureParams.whereDslSuffix;

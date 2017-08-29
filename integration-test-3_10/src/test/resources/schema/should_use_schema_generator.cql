@@ -1,6 +1,9 @@
 CREATE TYPE IF NOT EXISTS test.adress_udt(
 		street text,
 		number int);
+CREATE TYPE IF NOT EXISTS test.immutable_udt(
+		idx bigint,
+		value text);
 CREATE TYPE IF NOT EXISTS test.layer2(
 		layer text,
 		layer3 frozen<test.layer3>);
@@ -44,10 +47,26 @@ CREATE TABLE IF NOT EXISTS test.entity_child(
 		child_value text,
 		value text,
 		PRIMARY KEY(id));
+CREATE TABLE IF NOT EXISTS it_3_8.entity_for_aggregate(
+		partition bigint,
+		clustering int,
+		doubleval double,
+		stringval text,
+		PRIMARY KEY(partition, clustering))
+	WITH CLUSTERING ORDER BY(clustering ASC);
 CREATE TABLE IF NOT EXISTS test.entity_for_cast_fcall(
 		id bigint,
 		value text,
 		PRIMARY KEY(id));
+CREATE TABLE IF NOT EXISTS it_3_10.entity_for_group_by(
+		id bigint,
+		"uuID" uuid,
+		clust1 int,
+		"clusteRing2" int,
+		clust3 int,
+		val int,
+		PRIMARY KEY((id, "uuID"), clust1, "clusteRing2", clust3))
+	WITH CLUSTERING ORDER BY(clust1 ASC, "clusteRing2" ASC, clust3 ASC);
 CREATE TABLE IF NOT EXISTS test.entity_for_json_function_call(
 		id bigint,
 		clust bigint,
@@ -208,6 +227,10 @@ CREATE TABLE IF NOT EXISTS test.entity_custom_constructor(
 		udt frozen<test.custom_constructor_udt>,
 		value double,
 		PRIMARY KEY(id));
+CREATE TABLE IF NOT EXISTS it_3_10.entity_with_duration_type(
+		id bigint,
+		duration duration,
+		PRIMARY KEY(id));
 CREATE TABLE IF NOT EXISTS test.entitywithimplicitfieldparsing(
 		id bigint,
 		uuid uuid,
@@ -271,6 +294,7 @@ CREATE TABLE IF NOT EXISTS test.entity_with_native_collections(
 CREATE TABLE IF NOT EXISTS test.table_with_nested_udt(
 		id bigint,
 		complexudt frozen<test.having_nested_type>,
+		optionaludt test.no_ks,
 		udt frozen<test.no_ks>,
 		PRIMARY KEY(id));
 CREATE TABLE IF NOT EXISTS test.entity_with_no_ks_udt(
@@ -309,7 +333,7 @@ CREATE TABLE IF NOT EXISTS it_3_7.entity_with_sasi_indices(
 	WITH CLUSTERING ORDER BY(clust ASC);
 
 
-CREATE CUSTOM INDEX IF NOT EXISTS containsstandardanalyzer_index ON test.entity_with_sasi_indices ( containsstandardanalyzer )  USING 'org.apache.cassandra.index.sasi.SASIIndex' WITH OPTIONS = {'max_compaction_flush_memory_in_mb' : '1024','mode' : 'CONTAINS','analyzed' : 'true','analyzer_class' : 'org.apache.cassandra.index.sasi.analyzer.StandardAnalyzer','tokenization_locale': 'en','tokenization_enable_stemming': 'false','tokenization_skip_stop_words': 'false','tokenization_normalize_lowercase': 'true'};
+CREATE CUSTOM INDEX IF NOT EXISTS containsstandardanalyzer_index ON test.entity_with_sasi_indices ( containsstandardanalyzer )  USING 'org.apache.cassandra.index.sasi.SASIIndex' WITH OPTIONS = {'max_compaction_flush_memory_in_mb' : '1024','mode' : 'CONTAINS','analyzed' : 'true','analyzer_class' : 'org.apache.cassandra.index.sasi.analyzer.StandardAnalyzer','tokenization_locale': 'en','tokenization_enable_stemming': 'true','tokenization_skip_stop_words': 'false','tokenization_normalize_lowercase': 'true'};
 
 
 CREATE CUSTOM INDEX IF NOT EXISTS numeric_index ON test.entity_with_sasi_indices ( numeric )  USING 'org.apache.cassandra.index.sasi.SASIIndex' WITH OPTIONS = {'max_compaction_flush_memory_in_mb' : '1024','mode' : 'PREFIX'};
@@ -365,6 +389,12 @@ CREATE TABLE IF NOT EXISTS test.entity_with_udts(
 		optionaludt test.udt_no_ks,
 		setudt set<frozen<test.udt_no_ks>>,
 		tupleudt frozen<tuple<int, udt_no_ks>>,
+		PRIMARY KEY(id));
+CREATE TABLE IF NOT EXISTS test.immutable_entity(
+		id bigint,
+		name text,
+		udt frozen<test.immutable_udt>,
+		value double,
 		PRIMARY KEY(id));
 CREATE TABLE IF NOT EXISTS test.multi_clustering_entity(
 		id bigint,

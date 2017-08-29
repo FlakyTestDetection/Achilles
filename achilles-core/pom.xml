@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (C) 2012-2016 DuyHai DOAN
+  ~ Copyright (C) 2012-2017 DuyHai DOAN
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
     <parent>
         <artifactId>achilles</artifactId>
         <groupId>info.archinnov</groupId>
-        <version>5.2.2-SNAPSHOT</version>
+        <version>5.3.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>achilles-core</artifactId>
@@ -131,20 +131,20 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.bsc.maven</groupId>
-                <artifactId>maven-processor-plugin</artifactId>
-                <version>2.2.4</version>
-                <executions>
-                    <execution>
-                        <id>process</id>
-                        <goals>
-                            <goal>process</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.bsc.maven</groupId>-->
+                <!--<artifactId>maven-processor-plugin</artifactId>-->
+                <!--<version>2.2.4</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>process</id>-->
+                        <!--<goals>-->
+                            <!--<goal>process</goal>-->
+                        <!--</goals>-->
+                        <!--<phase>generate-sources</phase>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -175,6 +175,7 @@
                                     <directory>src/test/java</directory>
                                     <includes>
                                         <include>**/TestEntity*.java</include>
+                                        <include>**/TestImmutable*.java</include>
                                         <include>**/TestView*.java</include>
                                         <include>**/TestUDT*.java</include>
                                         <include>**/TestCodecRegistry*.java</include>

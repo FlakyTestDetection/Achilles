@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package info.archinnov.achilles.internals.parser;
 
 import static info.archinnov.achilles.internals.apt.AptUtils.containsAnnotation;
-import static info.archinnov.achilles.internals.parser.TypeUtils.getRawType;
 import static info.archinnov.achilles.internals.parser.TypeUtils.*;
 
 import java.util.List;
@@ -62,7 +61,8 @@ public class UDTParser extends AbstractBeanParser {
                     accessorsExclusionContexts, globalContext);
 
             final List<FieldMetaSignature> customConstructorFieldMetaSignatures =
-                    parseCustomConstructor(rawUdtTypeName.toString(), typeElement, fieldMetaSignatures);
+                    parseAndValidateCustomConstructor(globalContext.beanValidator(),
+                            rawUdtTypeName.toString(), typeElement, fieldMetaSignatures);
 
             TypeSpec udtClassPropertyCode = udtMetaCodeGen.buildUDTClassProperty(typeElement, context.entityContext,
                     fieldMetaSignatures, customConstructorFieldMetaSignatures);
@@ -94,7 +94,7 @@ public class UDTParser extends AbstractBeanParser {
 
     void validateUDT(GlobalParsingContext context, TypeName udtTypeName, TypeElement typeElement) {
         context.beanValidator().validateIsAConcreteClass(aptUtils, typeElement);
-        final boolean isSupportedType = TypeUtils.ALLOWED_TYPES.contains(udtTypeName);
+        final boolean isSupportedType = context.typeValidator().getAllowedTypes().contains(udtTypeName);
         aptUtils.validateFalse(isSupportedType,
                 "Type '%s' cannot be annotated with '%s' because it is a supported type",
                 udtTypeName, UDT.class.getCanonicalName());

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,6 +149,16 @@ public class TestEntityForFieldInfo {
     @Column
     private String columnWithNoSetter;
 
+    @Column
+    public final String immutableColumn;
+
+    public TestEntityForFieldInfo() {
+        this.immutableColumn = null;
+    }
+
+    public TestEntityForFieldInfo(String immutableColumn) {
+        this.immutableColumn = immutableColumn;
+    }
 
     public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;

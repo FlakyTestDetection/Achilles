@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 package info.archinnov.achilles.internals.codegen.dsl.select.cassandra2_2;
 
 import static info.archinnov.achilles.internals.parser.TypeUtils.*;
-import static info.archinnov.achilles.internals.parser.TypeUtils.ABSTRACT_SELECT_WHERE_JSON;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,11 +45,9 @@ public class SelectWhereDSLCodeGen2_2 extends SelectWhereDSLCodeGen
                 WHERE_JSON_DSL_SUFFIX, END_JSON_DSL_SUFFIX,
                 ABSTRACT_SELECT_WHERE_PARTITION_JSON, ABSTRACT_SELECT_WHERE_JSON);
 
-        final Optional<FieldSignatureInfo> firstClustering = clusteringCols.stream().limit(1).findFirst();
-
         return buildWhereClassesInternal(signature, context.selectWhereDSLCodeGen(),
                 partitionKeys, clusteringCols,
-                firstClustering, jsonClassSignatureParams);
+                jsonClassSignatureParams);
 
     }
 

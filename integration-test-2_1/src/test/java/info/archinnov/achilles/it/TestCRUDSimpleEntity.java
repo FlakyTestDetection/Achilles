@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,10 +44,10 @@ import com.google.common.collect.Sets;
 import info.archinnov.achilles.generated.ManagerFactory;
 import info.archinnov.achilles.generated.ManagerFactoryBuilder;
 import info.archinnov.achilles.generated.manager.SimpleEntity_Manager;
-import info.archinnov.achilles.internals.entities.SimpleEntity;
 import info.archinnov.achilles.internals.dsl.crud.DeleteByPartitionWithOptions;
 import info.archinnov.achilles.internals.dsl.crud.DeleteWithOptions;
 import info.archinnov.achilles.internals.dsl.crud.InsertWithOptions;
+import info.archinnov.achilles.internals.entities.SimpleEntity;
 import info.archinnov.achilles.it.utils.CassandraLogAsserter;
 import info.archinnov.achilles.junit.AchillesTestResource;
 import info.archinnov.achilles.junit.AchillesTestResourceBuilder;

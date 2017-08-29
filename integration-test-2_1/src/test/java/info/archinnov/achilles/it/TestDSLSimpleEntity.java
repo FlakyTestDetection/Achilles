@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,10 @@ import org.apache.commons.lang3.RandomUtils;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.datastax.driver.core.*;
+import com.datastax.driver.core.ConsistencyLevel;
+import com.datastax.driver.core.ExecutionInfo;
+import com.datastax.driver.core.Row;
+import com.datastax.driver.core.Session;
 import com.datastax.driver.core.policies.DowngradingConsistencyRetryPolicy;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
@@ -42,7 +45,6 @@ import info.archinnov.achilles.generated.ManagerFactoryBuilder;
 import info.archinnov.achilles.generated.dsl.SimpleEntity_Delete;
 import info.archinnov.achilles.generated.dsl.SimpleEntity_Select;
 import info.archinnov.achilles.generated.dsl.SimpleEntity_Update;
-import info.archinnov.achilles.generated.function.SystemFunctions;
 import info.archinnov.achilles.generated.manager.SimpleEntity_Manager;
 import info.archinnov.achilles.internals.entities.SimpleEntity;
 import info.archinnov.achilles.it.utils.CassandraLogAsserter;
@@ -92,6 +94,34 @@ public class TestDSLSimpleEntity {
                 .where()
                 .id().Eq(id)
                 .date().Eq(date)
+                .getOne();
+
+        //Then
+        assertThat(actual).isNotNull();
+        assertThat(actual.getConsistencyList()).containsExactly(ConsistencyLevel.QUORUM, ConsistencyLevel.LOCAL_ONE);
+        assertThat(actual.getSimpleSet()).containsExactly(1.0, 2.0);
+        assertThat(actual.getSimpleMap()).containsEntry(10, "ten");
+        assertThat(actual.getSimpleMap()).containsEntry(20, "twenty");
+    }
+
+    @Test
+    public void should_dsl_select_with_token_value() throws Exception {
+        //Given
+        final long id = RandomUtils.nextLong(0L, Long.MAX_VALUE);
+        final Date date = buildDateKey();
+        scriptExecutor.executeScriptTemplate("SimpleEntity/insert_single_row.cql", ImmutableMap.of("id", id, "table", "simple"));
+
+        //When
+        final SimpleEntity actual = manager
+                .dsl()
+                .select()
+                .consistencyList()
+                .simpleSet()
+                .simpleMap()
+                .value()
+                .fromBaseTable()
+                .where()
+                .tokenValueOf_id().Gte_And_Lte(Long.MIN_VALUE, Long.MAX_VALUE)
                 .getOne();
 
         //Then

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.utils.UUIDs;
 import com.google.common.collect.ImmutableMap;
 
@@ -180,6 +181,7 @@ public class TestDSLEntityWithClusterings {
 
         assertThat(list).hasSize(2);
     }
+
 
     @Test
     public void should_dsl_select_slice_with_asymetric_tuples_same_partition() throws Exception {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,8 +76,8 @@ public abstract class SelectDSLCodeGen extends AbstractDSLCodeGen {
                 .addField(buildEntityClassField(signature))
                 .addType(buildSelectColumns(signature, signatureForSelectColumns))
                 .addType(buildSelectColumnsTypedMap(signature, signatureForSelectColumnsTypedMap))
-                .addType(buildSelectFrom(signature, firstPartitionKey))
-                .addType(buildSelectFromTypedMap(signature, firstPartitionKey));
+                .addType(buildSelectFrom(signature, firstPartitionKey).build())
+                .addType(buildSelectFromTypedMap(signature, firstPartitionKey).build());
 
         signature.fieldMetaSignatures
                 .stream()
@@ -198,7 +198,7 @@ public abstract class SelectDSLCodeGen extends AbstractDSLCodeGen {
         return selectColumnsBuilder.build();
     }
 
-    public TypeSpec buildSelectFrom(EntityMetaSignature signature, String firstPartitionKey) {
+    public TypeSpec.Builder buildSelectFrom(EntityMetaSignature signature, String firstPartitionKey) {
         TypeName selectWhereTypeName = ClassName.get(DSL_PACKAGE, signature.selectWhereReturnType(firstPartitionKey));
 
         TypeName selectEndTypeName = ClassName.get(DSL_PACKAGE, signature.selectEndReturnType());
@@ -222,11 +222,10 @@ public abstract class SelectDSLCodeGen extends AbstractDSLCodeGen {
                         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                         .addStatement("return new $T(where, cassandraOptions)", selectEndTypeName)
                         .returns(selectEndTypeName)
-                        .build())
-                .build();
+                        .build());
     }
 
-    public TypeSpec buildSelectFromTypedMap(EntityMetaSignature signature, String firstPartitionKey) {
+    public TypeSpec.Builder buildSelectFromTypedMap(EntityMetaSignature signature, String firstPartitionKey) {
         TypeName selectWhereTypedMapTypeName = ClassName.get(DSL_PACKAGE, signature.selectWhereTypedMapReturnType(firstPartitionKey));
 
         TypeName selectEndTypedMapTypeName = ClassName.get(DSL_PACKAGE, signature.selectEndTypedMapReturnType());
@@ -250,8 +249,7 @@ public abstract class SelectDSLCodeGen extends AbstractDSLCodeGen {
                         .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                         .addStatement("return new $T(where, cassandraOptions)", selectEndTypedMapTypeName)
                         .returns(selectEndTypedMapTypeName)
-                        .build())
-                .build();
+                        .build());
     }
 
     public MethodSpec buildSelectColumnMethod(TypeName newTypeName, FieldMetaSignature parsingResult, String selectVariable, ReturnType returnType) {

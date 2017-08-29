@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,10 @@ import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.util.*;
-import javax.lang.model.element.*;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Name;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
@@ -92,18 +95,32 @@ public class FieldInfoParser {
         if (optionalAccessorExclusion.isPresent()) {
             final AccessorsExclusionContext exclusionContext = optionalAccessorExclusion.get();
 
-            // Right now we always have getters, until Immutable entities is implemented
-            final ExecutableElement getter = aptUtils.findGetter(classElm, elm, deriveGetterName(elm));
-            getterLambda = CodeBlock.builder()
-                    .add("($T entity$$) -> entity$$.$L()", rawEntityClass, getter.getSimpleName().toString())
-                    .build();
+            /**
+             *
+             * no Getter/no Setter == Immutable entity
+             * Getter/no Setter == entity with custom @EntityCreator constructor
+             *
+             **/
+
+            if (exclusionContext.noGetter) {
+                // Direct field access
+                getterLambda = CodeBlock.builder()
+                        .add("($T entity$$) -> entity$$.$L", rawEntityClass, fieldName)
+                        .build();
+            } else {
+                final ExecutableElement getter = aptUtils.findGetter(classElm, elm, deriveGetterName(elm));
+                getterLambda = CodeBlock.builder()
+                        .add("($T entity$$) -> entity$$.$L()", rawEntityClass, getter.getSimpleName().toString())
+                        .build();
+            }
+
 
             if (exclusionContext.noSetter) {
                 setterLambda = CodeBlock.builder()
                         .add("($T entity$$, $T value$$) -> {}", rawEntityClass, currentType)
                         .build();
             } else {
-                throw new AchillesBeanMappingException(format("AccessorsExclusionContext for for entity '%s' but the setter is present", context.className));
+                throw new AchillesBeanMappingException(format("AccessorsExclusionContext for entity '%s' but the setter is present", context.className));
             }
 
         } else {

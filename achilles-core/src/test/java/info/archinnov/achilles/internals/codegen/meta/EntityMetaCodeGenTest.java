@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -347,8 +347,7 @@ public class EntityMetaCodeGenTest extends AbstractTestProcessor
             builder.buildEntityMeta(EntityType.TABLE, typeElement, context, parsingResults, emptyList());
         });
         failTestWithMessage(
-                "Bean type 'info.archinnov.achilles.internals.sample_classes.parser.entity.TestEntityWithNoPublicConstructor' " +
-                        "should have either a public no-args constructor or ONE custom constructor with annotation @EntityCreator",
+                "Entity type 'info.archinnov.achilles.internals.sample_classes.parser.entity.TestEntityWithNoPublicConstructor' should",
                 TestEntityWithNoPublicConstructor.class);
     }
 

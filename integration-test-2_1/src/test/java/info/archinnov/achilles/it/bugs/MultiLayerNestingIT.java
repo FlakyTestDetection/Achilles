@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,9 @@ import com.datastax.driver.core.UDTValue;
 import info.archinnov.achilles.generated.ManagerFactory;
 import info.archinnov.achilles.generated.ManagerFactoryBuilder;
 import info.archinnov.achilles.generated.manager.EntityLayer1_Manager;
-import info.archinnov.achilles.internals.entities.*;
+import info.archinnov.achilles.internals.entities.EntityLayer1;
+import info.archinnov.achilles.internals.entities.Layer2;
+import info.archinnov.achilles.internals.entities.Layer3;
 import info.archinnov.achilles.junit.AchillesTestResource;
 import info.archinnov.achilles.junit.AchillesTestResourceBuilder;
 import info.archinnov.achilles.type.TypedMap;

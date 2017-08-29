@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,8 @@ public class EntityParser extends AbstractBeanParser {
         final List<AccessorsExclusionContext> accessorsExclusionContexts = prebuildAccessorsExclusion(elm, globalParsingContext);
         final List<FieldMetaSignature> fieldMetaSignatures = parseFields(elm, fieldParser, accessorsExclusionContexts, globalParsingContext);
         final List<FieldMetaSignature> customConstructorFieldMetaSignatures =
-                parseCustomConstructor(elm.getSimpleName().toString(), elm, fieldMetaSignatures);
+                parseAndValidateCustomConstructor(globalParsingContext.beanValidator(),
+                        elm.getSimpleName().toString(), elm, fieldMetaSignatures);
         return entityMetaCodeGen.buildEntityMeta(EntityType.TABLE, elm, globalParsingContext,
                 fieldMetaSignatures, customConstructorFieldMetaSignatures);
     }
@@ -54,7 +55,8 @@ public class EntityParser extends AbstractBeanParser {
         final List<AccessorsExclusionContext> accessorsExclusionContexts = prebuildAccessorsExclusion(elm, globalParsingContext);
         final List<FieldMetaSignature> fieldMetaSignatures = parseFields(elm, fieldParser, accessorsExclusionContexts, globalParsingContext);
         final List<FieldMetaSignature> customConstructorFieldMetaSignatures =
-                parseCustomConstructor(elm.getSimpleName().toString(), elm, fieldMetaSignatures);
+                parseAndValidateCustomConstructor(globalParsingContext.beanValidator(),
+                        elm.getSimpleName().toString(), elm, fieldMetaSignatures);
         return entityMetaCodeGen.buildEntityMeta(EntityType.VIEW, elm, globalParsingContext,
                 fieldMetaSignatures, customConstructorFieldMetaSignatures);
     }

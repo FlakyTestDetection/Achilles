@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2016 DuyHai DOAN
+ * Copyright (C) 2012-2017 DuyHai DOAN
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.datastax.driver.core.Row;
 import com.datastax.driver.core.UDTValue;
 import com.datastax.driver.core.UserType;
 import com.datastax.driver.core.schemabuilder.CreateType;
@@ -96,7 +95,7 @@ public abstract class AbstractUDTClassProperty<A>
 
     protected abstract Class<?> getParentEntityClass();
 
-    protected abstract UDTValue createUDTFromBean(A instance, Optional<CassandraOptions> cassandraOptions);
+    protected abstract UDTValue createUDTFromBean(A instance, boolean frozen, Optional<CassandraOptions> cassandraOptions);
 
     protected abstract A newInstanceFromCustomConstructor(UDTValue udtValue);
 
@@ -122,15 +121,15 @@ public abstract class AbstractUDTClassProperty<A>
         return null;
     }
 
-    protected UserType getUserType(Optional<CassandraOptions> cassandraOptions) {
-        if (cassandraOptions.isPresent()) {
-            return buildType(cassandraOptions);
+    protected UserType getUserType(boolean frozen, Optional<CassandraOptions> cassandraOptions) {
+        if (cassandraOptions.isPresent() || userType == null) {
+            return buildType(frozen, cassandraOptions);
         } else {
             return userType;
         }
     }
 
-    public UserType buildType(Optional<CassandraOptions> cassandraOptions) {
+    public UserType buildType(boolean frozen, Optional<CassandraOptions> cassandraOptions) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(format("Building UserType instance for the current UDT class meta %s", this.toString()));
         }
@@ -148,7 +147,7 @@ public abstract class AbstractUDTClassProperty<A>
                 .stream()
                 .map(property -> userTypeFactory.fieldFor(property.fieldInfo.cqlColumn, property.buildType(cassandraOptions)))
                 .collect(Collectors.toList());
-        return userTypeFactory.typeFor(keyspaceName.get(), udtName, fields);
+        return userTypeFactory.typeFor(keyspaceName.get(), udtName, frozen, fields);
     }
 
     public String generateSchema(SchemaContext context) {
@@ -184,7 +183,7 @@ public abstract class AbstractUDTClassProperty<A>
         for (AbstractProperty<A, ?, ?> x : componentsProperty) {
             x.inject(userTypeFactory, tupleTypeFactory);
         }
-        userType = this.buildType(schemaNameProvider.map(CassandraOptions::withSchemaNameProvider));
+        //userType = this.buildType(frozen, schemaNameProvider.map(CassandraOptions::withSchemaNameProvider));
     }
 
     @Override
